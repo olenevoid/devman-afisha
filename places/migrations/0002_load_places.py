@@ -6,7 +6,9 @@ from django.db import migrations
 
 def load_places_from_json(apps, schema_editor):
     Place = apps.get_model("places", "Place")
-    static_dir = Path(__file__).resolve().parent.parent.parent / "static" / "places"
+    static_dir = (
+        Path(__file__).resolve().parent.parent.parent / "static" / "places"
+    )
 
     for json_file in static_dir.glob("*.json"):
         with open(json_file, encoding="utf-8") as f:
