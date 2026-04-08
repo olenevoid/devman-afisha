@@ -25,7 +25,7 @@ from places.views import place_details, show_index
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", show_index),
-    path("places/<int:place_id>/", place_details),
+    path("places/<int:place_id>/", place_details, name="place_details"),
 ]
 
 if settings.DEBUG:
