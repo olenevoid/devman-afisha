@@ -20,11 +20,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from places.views import show_index
+from places.views import place_details, show_index
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", show_index),
+    path("places/<int:place_id>/", place_details),
 ]
 
 if settings.DEBUG:
