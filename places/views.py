@@ -1,17 +1,36 @@
 import json
 
-from django.conf import settings
 from django.shortcuts import render
+
+from places.models import Place
+
+DETAILS_URL_PLACEHOLDER = "/static/places/moscow_legends.json"
+
+
+def serialize_place(place):
+    return {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [place.lng, place.lat],
+        },
+        "properties": {
+            "title": place.title,
+            "placeId": place.id,
+            "detailsUrl": DETAILS_URL_PLACEHOLDER,
+        },
+    }
 
 
 def show_index(request):
     print("Кто-то зашёл на главную!")
 
-    with open(
-        settings.BASE_DIR / "static" / "places.json", encoding="utf-8"
-    ) as f:
-        places_geojson = json.load(f)
+    features = [serialize_place(place) for place in Place.objects.all()]
 
-    return render(
-        request, "index.html", {"places_geojson": json.dumps(places_geojson)}
+    places_geojson = json.dumps(
+        {"type": "FeatureCollection", "features": features}
     )
+
+    context = {"places_geojson": places_geojson}
+
+    return render(request, "index.html", context)
