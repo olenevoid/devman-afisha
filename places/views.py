@@ -5,8 +5,6 @@ from django.shortcuts import get_object_or_404, render
 
 from places.models import Place
 
-DETAILS_URL_PLACEHOLDER = "/places/{place_id}/"
-
 
 def serialize_place(place):
     return {
@@ -18,7 +16,7 @@ def serialize_place(place):
         "properties": {
             "title": place.title,
             "placeId": place.id,
-            "detailsUrl": DETAILS_URL_PLACEHOLDER.format(place_id=place.id),
+            "detailsUrl": f"/places/{place.id}/",
         },
     }
 
