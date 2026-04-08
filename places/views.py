@@ -50,7 +50,9 @@ def serialize_place_details(place):
 
 
 def place_details(request, place_id):
-    place = get_object_or_404(Place, pk=place_id)
+    place = get_object_or_404(
+        Place.objects.prefetch_related("images"), pk=place_id
+    )
     return JsonResponse(
         serialize_place_details(place),
         json_dumps_params={"ensure_ascii": False, "indent": 2},
