@@ -1,6 +1,8 @@
 from adminsortable2.admin import SortableAdminBase, SortableTabularInline
+from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
+from tinymce.widgets import TinyMCE
 
 from .models import Image, Place
 
@@ -22,6 +24,13 @@ class ImageInline(SortableTabularInline):
 @admin.register(Place)
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [ImageInline]
+
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        if db_field.name == "description_long":
+            kwargs["widget"] = TinyMCE()
+        elif db_field.name == "description_short":
+            kwargs["widget"] = forms.Textarea()
+        return super().formfield_for_dbfield(db_field, request, **kwargs)
 
 
 @admin.register(Image)
