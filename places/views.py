@@ -27,11 +27,9 @@ def show_index(request):
 
     features = [serialize_place(place) for place in Place.objects.all()]
 
-    places_geojson = json.dumps(
-        {"type": "FeatureCollection", "features": features}
-    )
-
-    context = {"places_geojson": places_geojson}
+    context = {
+        "places_geojson": {"type": "FeatureCollection", "features": features}
+    }
 
     return render(request, "index.html", context)
 
