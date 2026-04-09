@@ -21,8 +21,6 @@ def serialize_place(place):
 
 
 def show_index(request):
-    print("Кто-то зашёл на главную!")
-
     features = [serialize_place(place) for place in Place.objects.all()]
 
     context = {
