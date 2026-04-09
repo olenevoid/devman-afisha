@@ -23,9 +23,7 @@ class Command(BaseCommand):
 
         json_file = Path(path)
         if not json_file.exists():
-            self.stderr.write(
-                self.style.ERROR(f"File not found: {json_file}")
-            )
+            self.stderr.write(self.style.ERROR(f"File not found: {json_file}"))
             return None
 
         with open(json_file, encoding="utf-8") as f:
