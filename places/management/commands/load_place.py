@@ -33,10 +33,10 @@ class Command(BaseCommand):
         filepath = options["filepath"]
 
         if filepath:
-            data = self.load_json(filepath)
-            if data is None:
+            place_record = self.load_json(filepath)
+            if place_record is None:
                 return
-            data_sources = [(filepath, data)]
+            places_to_load = [(filepath, place_record)]
         else:
             static_dir = settings.BASE_DIR / "static" / "places"
             json_files = sorted(static_dir.glob("*.json"))
@@ -45,20 +45,20 @@ class Command(BaseCommand):
                 self.stderr.write(self.style.ERROR("No JSON files found."))
                 return
 
-            data_sources = []
+            places_to_load = []
             for json_file in json_files:
-                data = self.load_json(str(json_file))
-                if data is not None:
-                    data_sources.append((str(json_file), data))
+                place_record = self.load_json(str(json_file))
+                if place_record is not None:
+                    places_to_load.append((str(json_file), place_record))
 
-        for source, data in data_sources:
+        for source, place_record in places_to_load:
 
-            coordinates = data.get("coordinates", {})
+            coordinates = place_record.get("coordinates", {})
             place, created = Place.objects.update_or_create(
-                title=data["title"],
+                title=place_record["title"],
                 defaults={
-                    "description_short": data["description_short"],
-                    "long_description": data["description_long"],
+                    "description_short": place_record["description_short"],
+                    "long_description": place_record["description_long"],
                     "lng": float(coordinates.get("lng", 0)),
                     "lat": float(coordinates.get("lat", 0)),
                 },
@@ -73,7 +73,7 @@ class Command(BaseCommand):
 
             Image.objects.filter(place=place).delete()
 
-            for position, img_url in enumerate(data.get("imgs", [])):
+            for position, img_url in enumerate(place_record.get("imgs", [])):
                 try:
                     req = urllib.request.Request(
                         img_url, headers={"User-Agent": "Mozilla/5.0"}
