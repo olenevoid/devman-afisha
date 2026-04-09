@@ -58,7 +58,7 @@ class Command(BaseCommand):
                 title=data["title"],
                 defaults={
                     "description_short": data["description_short"],
-                    "description_long": data["description_long"],
+                    "long_description": data["description_long"],
                     "lng": float(coordinates.get("lng", 0)),
                     "lat": float(coordinates.get("lat", 0)),
                 },

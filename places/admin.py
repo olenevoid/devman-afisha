@@ -25,7 +25,7 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [ImageInline]
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
-        if db_field.name == "description_long":
+        if db_field.name == "long_description":
             kwargs["widget"] = TinyMCE()
         return super().formfield_for_dbfield(db_field, request, **kwargs)
 
