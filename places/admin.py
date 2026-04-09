@@ -24,6 +24,7 @@ class ImageInline(SortableTabularInline):
 @admin.register(Place)
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [ImageInline]
+    search_fields = ["title"]
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name == "long_description":
@@ -33,4 +34,4 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
-    pass
+    autocomplete_fields = ["place"]
