@@ -15,6 +15,12 @@ class Place(models.Model):
     class Meta:
         verbose_name = "Место"
         verbose_name_plural = "Места"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["title", "lng", "lat"],
+                name="unique_place_title_coordinates",
+            ),
+        ]
 
     def __str__(self):
         return self.title
