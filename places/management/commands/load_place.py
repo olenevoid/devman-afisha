@@ -59,7 +59,7 @@ class Command(BaseCommand):
                 lng=float(coordinates.get("lng", 0)),
                 lat=float(coordinates.get("lat", 0)),
                 defaults={
-                    "description_short": place_record["description_short"],
+                    "short_description": place_record["description_short"],
                     "long_description": place_record["description_long"],
                 },
             )
