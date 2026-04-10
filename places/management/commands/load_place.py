@@ -56,11 +56,15 @@ class Command(BaseCommand):
             coordinates = place_record.get("coordinates", {})
             place, created = Place.objects.update_or_create(
                 title=place_record["title"],
-                lng=float(coordinates.get("lng", 0)),
-                lat=float(coordinates.get("lat", 0)),
+                lng=float(coordinates["lng"]),
+                lat=float(coordinates["lat"]),
                 defaults={
-                    "short_description": place_record["description_short"],
-                    "long_description": place_record["description_long"],
+                    "short_description": place_record.get(
+                        "description_short", ""
+                    ),
+                    "long_description": place_record.get(
+                        "description_long", ""
+                    ),
                 },
             )
 
