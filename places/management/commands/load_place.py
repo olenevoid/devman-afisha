@@ -53,7 +53,30 @@ class Command(BaseCommand):
 
         for source, place_record in places_to_load:
 
-            coordinates = place_record.get("coordinates", {})
+            required_fields = ["title", "coordinates"]
+            missing = [f for f in required_fields if f not in place_record]
+            if missing:
+                self.stderr.write(
+                    self.style.ERROR(
+                        f"Skipping {source}: missing fields: "
+                        f"{', '.join(missing)}"
+                    )
+                )
+                continue
+
+            coordinates = place_record["coordinates"]
+            missing_coords = [
+                c for c in ("lng", "lat") if c not in coordinates
+            ]
+            if missing_coords:
+                self.stderr.write(
+                    self.style.ERROR(
+                        f"Skipping {source}: coordinates missing: "
+                        f"{', '.join(missing_coords)}"
+                    )
+                )
+                continue
+
             place, created = Place.objects.update_or_create(
                 title=place_record["title"],
                 lng=float(coordinates["lng"]),
